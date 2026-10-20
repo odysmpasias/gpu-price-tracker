@@ -2,6 +2,7 @@ import time
 from datetime import date
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 
 base_url = "https://www.plaisio.gr/list/anavathmisi-diktia/anavathmisi-pc/kartes-grafikon"
@@ -21,5 +22,9 @@ for page in range(1,21):
     print(f"Page {page}: {len(cards)} cards")
     for card in cards:
         products.append({"id" :card["data-cnstrc-item-id"],"name" : card["data-cnstrc-item-name"],"price" : card["data-cnstrc-item-price"], "date" : today})
-    time.sleep(2)
-    print(len(products))
+    time.sleep(2)\
+
+print(len(products))
+df = pd.DataFrame(products)
+print(df.head())
+df.to_csv(f"data/raw/{today}.csv", index = False)
