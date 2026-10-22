@@ -34,3 +34,31 @@ history, and explores which factors actually affect prices and how.
 - `notebooks/` - exploration and experiments
 - `src/` - project source code
 - `tests/` - automated tests
+
+## Data source
+
+Prices are collected from the public graphics cards category page of [Plaisio](https://www.plaisio.gr/list/anavathmisi-diktia/anavathmisi-pc/kartes-grafikon), a Greek electronics retailer.
+
+### What is collected
+
+Each run saves one CSV file to `data/raw/`, named after the collection date (e.g. `2026-10-21.csv`), with these columns:
+
+- `id`: the product ID used by the site
+- `name`: the product name as listed
+- `price`: the listed price in euros
+- `date`: the collection date
+
+The raw files are kept exactly as collected. Cleaning and filtering happen in later steps.
+
+### How it is collected
+
+The scraper follows the site's `robots.txt` and only reads the category listing pages with current prices. It does not access price history pages or APIs.
+
+- Requests are few (one per listing page) with a 2-second delay between them.
+- Every request identifies the project through its User-Agent.
+- If the site returns an error or blocks the request, the scraper stops. It never tries to bypass blocks or CAPTCHAs.
+- Collection is planned to run once a day through GitHub Actions.
+
+### Disclaimer
+
+This is a personal learning project and is not affiliated with Plaisio. Prices are snapshots of what was listed on each collection date and may differ from current prices.
