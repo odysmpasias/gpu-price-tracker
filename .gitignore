@@ -9,3 +9,7 @@ __pycache__/
 
 # Secrets (passwords, API keys)
 .env
+
+#Logs
+
+loggs/
