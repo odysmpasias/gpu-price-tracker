@@ -3,8 +3,15 @@ Start-Transcript -Path "logs\run_daily.log" -Append
 .\.venv\Scripts\python.exe src\gpu_price_tracker\scraper.py 2>&1 | Out-Host
 
 if($LASTEXITCODE -ne 0){
-    exit 1
     Stop-Transcript
+    exit 1
+}
+
+.\.venv\Scripts\python.exe .\src\gpu_price_tracker\cleaning.py 2>&1 | Out-Host
+
+if($LASTEXITCODE -ne 0){
+    Stop-Transcript
+    exit 1 
 }
 
 git add data/raw
