@@ -15,7 +15,7 @@ def clean_data(df):
     df.loc[intel, "gpu_maker"] = "INTEL"
     
     amd_pro_cards = df["name"].str.contains("Radeon pro|Radeon AI PRO", case = False)
-    nvidia_pro_cards = df["name"].str.contains("Quadro|RTX PRO", case = False)
+    nvidia_pro_cards = df["name"].str.contains("Quadro|RTX PRO|Ada Generation", case = False)
     intel_pro_cards = df["name"].str.contains("Arc Pro", case = False)
     df["is_pro"] = (amd_pro_cards|nvidia_pro_cards|intel_pro_cards)
 
