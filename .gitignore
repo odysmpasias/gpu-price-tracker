@@ -13,3 +13,7 @@ __pycache__/
 #Logs
 
 logs/
+
+#Ignore processed data and keep the folder
+data/processed/*
+!data/processed/.gitkeep
