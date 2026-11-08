@@ -1,9 +1,12 @@
 import pandas as pd
 import glob
+import re 
 
 def clean_data(df):
     df = df.copy()
     df["name"] = df["name"].str.replace("VGA ", "")
+    table = str.maketrans("ΑΒΕΗΙΚΜΝΟΡΤΥΧΖ", "ABEHIKMNOPTYXZ")
+    df["name"] = df["name"].str.translate(table)
     df["brand"] = df["name"].str.split().str[0]
     
     amd = df["name"].str.contains("Radeon|AMD", case = False)
@@ -28,6 +31,7 @@ def clean_data(df):
     df.loc[is_id_4761812, "vram"] = 16
 
     df["model"] = df["name"].str.extract(r"(?i)((?:RTX|GTX|GT)\s+\d+(?:\sTi)?)", expand=False).str.upper()
+    df["line"] = df["name"].str.extract(r"(Challenger|Phantom|Dual|prime|Rog|Tuf|Eagle|Windforce|Waterforce|aero|aorus|Shadow|Inspire|Pulse|nitro|pure|Gaming|ventus)", flags=re.IGNORECASE,expand=False).str.upper()
     
     model_amd = df["name"].str.extract(r"(?i)(RX\s+\d+(?:\s?(?:XT|GRE))?)", expand=False).str.upper()
     df["model"] = df["model"].fillna(model_amd)
