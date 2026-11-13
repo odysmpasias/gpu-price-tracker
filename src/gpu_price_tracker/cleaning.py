@@ -38,6 +38,10 @@ def clean_data(df):
     model_intel = df["name"].str.extract(r"(?i)(ARC\s+[A-Z]\d+)", expand=False).str.upper()
     df["model"] = df["model"].fillna(model_intel)
     df["model"] = df["model"].str.replace(" ", "")
+    douplicates_count = df.duplicated(["id", "date"],).sum()
+    if douplicates_count > 0:
+        print(f"Removed {douplicates_count} duplicate rows")
+    df = df.drop_duplicates(["id", "date"])
     return df
 
 raw_files = sorted(glob.glob("data/raw/*.csv"))
