@@ -44,26 +44,26 @@ def clean_data(df):
     df = df.drop_duplicates(["id", "date"])
     return df
 
-raw_files = sorted(glob.glob("data/raw/*.csv"))
+if __name__ == "__main__":
+    raw_files = sorted(glob.glob("data/raw/*.csv"))
 
+    cleaned_days = []
+    for file in raw_files:
+        raw = pd.read_csv(file)
+        cleaned = clean_data(raw)
+        cleaned_days.append(cleaned)
 
-cleaned_days = []
-for file in raw_files:
-    raw = pd.read_csv(file)
-    cleaned = clean_data(raw)
-    cleaned_days.append(cleaned)
+    all_days = pd.concat(cleaned_days, ignore_index=True)
 
-all_days = pd.concat(cleaned_days, ignore_index=True)
+    no_model = all_days[(all_days["model"].isna()) & (~all_days["is_pro"])]
+    if not no_model.empty:
+        raise ValueError(f"{len(no_model)} non-pro cards have no model")
 
-no_model = all_days[(all_days["model"].isna()) & (~all_days["is_pro"])]
-if not no_model.empty:
-    raise ValueError(f"{len(no_model)} non-pro cards have no model")
+    no_maker = all_days[(all_days["gpu_maker"].isna())]
+    if not no_maker.empty:
+        raise ValueError(f"{len(no_maker)} cards have no gpu_maker")
 
-no_maker = all_days[(all_days["gpu_maker"].isna())]
-if not no_maker.empty:
-    raise ValueError(f"{len(no_maker)} cards have no gpu_maker")
+    if all_days["is_pro"].all():
+        raise ValueError("All cards are marked as pro, check the pro masks")
 
-if all_days["is_pro"].all():
-    raise ValueError("All cards are marked as pro, check the pro masks")
-
-all_days.to_csv("data/processed/price_clean.csv", index=False)
+    all_days.to_csv("data/processed/price_clean.csv", index=False)
