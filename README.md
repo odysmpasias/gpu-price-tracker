@@ -13,8 +13,8 @@ history, and explores which factors actually affect prices and how.
 ## Roadmap
 
 - [x] 1. Environment setup
-- [ ] 2. Price collection script
-- [ ] 3. Daily automated collection with GitHub Actions
+- [x] 2. Price collection script
+- [x] 3. Daily automated collection(Windows Task Scheduler)
 - [ ] 4. "Fair price" model from specs (regression)
 - [ ] 5. Price forecasting with external factors
 - [ ] 6. Streamlit dashboard
@@ -57,7 +57,7 @@ The scraper follows the site's `robots.txt` and only reads the category listing 
 - Requests are few (one per listing page) with a 2-second delay between them.
 - Every request identifies the project through its User-Agent.
 - If the site returns an error or blocks the request, the scraper stops. It never tries to bypass blocks or CAPTCHAs.
-- Collection runs once a day on a local Windows machine, using Windows Task Scheduler and the `run_daily.ps1` script..
+- Collection runs once a day on a local Windows machine, using Windows Task Scheduler and the `run_daily.ps1` script.
 
 
 GitHub Actions was tested first, but the site returns `403 Forbidden` to GitHub's servers. Since the project does not bypass blocks, collection runs locally instead.
